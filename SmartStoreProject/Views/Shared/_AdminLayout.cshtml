@@ -1,0 +1,300 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Admin Pages</title>
+
+  
+    <link href="~/Dashboard/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
+
+   
+    <link href="~/css/sb-admin-2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"  crossorigin="anonymous">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+
+    <style>
+       .topbar.navbar-light .navbar-nav .nav-item .nav-link 
+       {
+            color: gray;
+       }
+       html{
+           height:100vh !important;
+           overflow:hidden;
+       }
+
+        #content-wrapper{
+            height:100vh !important;
+            overflow-y:scroll;
+        }
+
+        .sidebar-divider{
+            border :1px solid white !important;
+        }
+
+        .bg-gradient-primary{
+            background-image:none !important;
+            background-color: #000080 !important;
+
+        }
+    </style>
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" style="height:100vh !important;overflow:hidden" id="accordionSidebar">
+            <li>
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                    <div class="sidebar-brand-icon rotate-n-15">
+                        <i class="fas fa-user-shield fa-lg"></i>
+                    </div>
+                    <div class="sidebar-brand-text mx-3">Admin Dashboard</div>
+                </a>
+            </li>
+            
+
+            <li>
+                <hr class="sidebar-divider my-0">
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <hr class="sidebar-divider" />
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" asp-area="Admin" asp-controller="Category" asp-action="Index" aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Categories</span>
+                </a>
+              
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" asp-area="Admin" asp-controller="Product" asp-action="Index"
+                   aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>Products</span>
+                </a>
+             
+            </li>
+
+            <li>
+                <hr class="sidebar-divider" />
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" asp-area="Admin" asp-controller="User" asp-action="Index" aria-expanded="true" aria-controls="collapsePages">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Users</span>
+                </a>
+              
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" asp-area="Admin" asp-controller="Order" asp-action="Index" aria-expanded="true" aria-controls="collapsePages">
+                    <i class="bi bi-cart-check"></i>
+                    <span>Orders</span>
+                </a>
+
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="javascript:document.getElementById('logoutForm').submit()" aria-expanded="true" aria-controls="collapsePages">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </a>
+            </li>
+
+           <li>
+                <hr class="sidebar-divider d-none d-md-block">
+           </li>
+          
+          <li align="center">
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                </div>
+          </li>
+        </ul>
+       
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <ul class="navbar-nav ms-4">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Index">
+                                <div class="d-flex flex-row gap-2">
+                                    <div>
+                                        <i class="fas fa-home"></i>
+                                     </div>
+                                 
+                                  <div >
+                                      Home
+                                  </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <div class="d-flex flex-row gap-2">
+                                    <div>
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+
+                                    <div>
+                                        Contact
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" id="fullscreenToggle">
+                                <i class="fas fa-expand"></i>
+                            </a>
+                        </li>
+
+
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span id="lblAdminName" class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
+                               
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                 aria-labelledby="userDropdown">
+                                <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                </a>
+                               
+                                <div class="dropdown-divider"></div>
+                                <form asp-area="Admin" asp-controller="User" asp-action="Logout" method="post" id="logoutForm" class="d-none"></form>
+
+                                <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </nav>
+              
+                <div class="container-fluid">
+                    <main role="main" class="pb-3">
+                        @RenderBody()   
+                    </main>
+                </div>
+            </div>
+         
+        </div>
+
+        <a class="scroll-to-top rounded" href="#content-wrapper">
+            <i class="fas fa-angle-up"></i>
+        </a>
+    </div>
+   
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="~/vendor/jquery/jquery.easing.min.js"></script>
+    <script src="~/js/sb-admin-2.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+   <script>
+        $(document).ready(function(){
+            $.get("/Admin/Dashboard/GetLoginName",function(username){
+                $('#lblAdminName').text('Welcome '+username);
+            });
+        });
+
+        document.getElementById("fullscreenToggle").addEventListener("click", function (e) 
+        {
+                e.preventDefault();
+
+                if (!document.fullscreenElement &&
+                !document.mozFullScreenElement && // Firefox
+                !document.webkitFullscreenElement && // Chrome
+                !document.msFullscreenElement) 
+                {  // Edge
+
+                        // Request fullscreen
+                        if (document.documentElement.requestFullscreen)
+                        {
+                        document.documentElement.requestFullscreen();
+                        }
+                        else if (document.documentElement.mozRequestFullScreen) 
+                        { 
+                        document.documentElement.mozRequestFullScreen();
+                        } 
+                        else if (document.documentElement.webkitRequestFullscreen) 
+                        { // Chrome
+                        document.documentElement.webkitRequestFullscreen();
+                        } 
+                        else if (document.documentElement.msRequestFullscreen)
+                        { // Edge
+                        document.documentElement.msRequestFullscreen();
+                        }
+
+                        // Change icon to collapse
+                        document.getElementById("fullscreenIcon").classList.remove("fa-expand");
+                        document.getElementById("fullscreenIcon").classList.add("fa-compress");
+
+                } 
+                else
+                {
+                    // Exit fullscreen
+                    if (document.exitFullscreen)
+                    {
+                    document.exitFullscreen();
+                    } 
+                    else if (document.mozCancelFullScreen)
+                    {
+                    document.mozCancelFullScreen();
+                    } 
+                    else if (document.webkitExitFullscreen)
+                    {
+                    document.webkitExitFullscreen();
+                    } 
+                    else if (document.msExitFullscreen)
+                    {
+                    document.msExitFullscreen();
+                    }
+
+                    // Change icon back to expand
+                    document.getElementById("fullscreenIcon").classList.remove("fa-compress");
+                    document.getElementById("fullscreenIcon").classList.add("fa-expand");
+                }
+        });
+   </script>
+
+</body>
+
+</html>

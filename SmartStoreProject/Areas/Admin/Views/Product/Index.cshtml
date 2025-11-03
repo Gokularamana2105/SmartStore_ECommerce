@@ -1,0 +1,344 @@
+﻿@model ProductVM
+
+<style>
+    #tblProduct_filter {
+        margin-bottom: 20px;
+    }
+
+    .modal {
+        --bs-modal-width: 720px !important;
+    }
+
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Products Management</h3>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-lg-12">
+            <div class="card border-0 shadow bg-gradient p-4">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h5 class="border-1 border-bottom py-2" style="border-color:darkgray">View Product</h5>
+                    </div>
+                </div>
+                <div class="row mt-2 mb-3">
+                    <div class="col-lg-12 d-flex justify-content-end" style="gap:10px">
+                        <a onclick="createProduct()" id="btnCreate" style="width:75px" class="btn btn-primary">Create</a>
+                        <a onclick="editProduct()" id="btnEdit" class="btn btn-warning disabled" style="width:75px" data-bs-toggle="tooltip"
+                           data-bs-placement="top"
+                           title="Edit">Edit</a>
+                        <a onclick="deleteProduct()" id="btnDelete" style="width:75px" class="btn btn-danger disabled" data-bs-toggle="tooltip"
+                           data-bs-placement="top"
+                           title="Delete">
+                            Delete
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <table id="tblProduct" class="table table-responsive-md table-striped mb-3">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Check Box
+                                    </th>
+                                    <th class="text-center">
+                                        Name
+                                    </th>
+                                    <th class="text-center">
+                                        Description
+                                    </th>
+                                    <th class="text-center">
+                                        Price
+                                    </th>
+                                    <th class="text-center">
+                                        Category
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var items in Model.products.OrderByDescending(r => r.Name))
+                                {
+                                    <tr>
+                                        <td><input type="checkbox" onchange="CheckBox();" value="@items.Id" style="cursor:pointer" class="IdChkbox" /></td>
+                                        <td class="text-center">@items.Name</td>
+                                        <td class="text-center">@items.Description</td>
+                                        <td class="text-center">@items.LowPrice</td>
+                                        <td class="text-center">@items.category.Name</td>
+
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="productModal" tabindex="-1" inert>
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="productModalLabel">New Product</h5>
+                <button type="button" class="btn-close" onclick="closePopUp();" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="Id" />
+                <input type="hidden" id="EmptyId" value="@Guid.Empty" />
+                <input type="hidden" asp-for="prd.ProductImage" id="hdnProductImage" />
+
+                <div class="row">
+                    <div class="col-8">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="mb-3">
+                                    <label for="Name" class="form-label">Name</label>
+                                    <input id="Name" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Category Name</label>
+                                    <select class="form-select" id="ddlCategory" asp-items="Model.categories" asp-for="prd.CategoryId">
+                                        <option value="@Guid.Empty" selected disabled>--Select--</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label for="Description" class="form-label">Description</label>
+                                    <textarea class="form-control" id="Description"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="mb-3" id="divImage">
+                                    <label class="form-label">Upload Product Image</label>
+                                    <input id="prdtImage" type="file" name="file" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb-3">
+                                    <label for="Ratings" class="form-label">Ratings</label>
+                                    <input id="Ratings" class="form-control" required />
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label for="highPrice" class="form-label">Top Price</label>
+                                        <input id="highPrice" class="form-control" required />
+                                    </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb-3">
+                                    <label for="lowPrice" class="form-label">Low Price</label>
+                                    <input id="lowPrice" type="text" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-4">
+                        <img id="ProductImage" src="@Model.prd.ProductImage" style="width:100%;height:150px;border-color:lightgray !important" class="border border-1" />
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSave" class="btn btn-success" onclick="saveProduct()">Save</button>
+                <button type="button" onclick="closePopUp();" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function(){
+              $('#tblProduct').DataTable({
+                   "lengthMenu":[5,10,20,50,100]
+              });
+        })
+        var idCheckBox;
+
+         function createProduct(){
+                    var categoryId=$('#EmptyId').val();
+                    $('#productModal').prop('inert', false).removeAttr('aria-hidden');
+                    $('#productModal').modal('show');
+                    $('#Id').val('');
+                    $('#Name').val('');
+                    $('#Ratings').val('');
+                    $('#lowPrice').val('');
+                    $('#highPrice').val('');
+                    $('#Description').val('');
+                    $('#ddlCategory').val(categoryId);
+                    $('#productModalLabel').text('New Product');
+                    $('#divImage').css('display','block');
+         };
+
+          function editProduct(){
+               $.get("/Admin/Product/GetProduct/"+idCheckBox,function(data)
+              {
+                  $('#Id').val(data.prd.id);
+                  $('#Name').val(data.prd.name);
+                  $('#Description').val(data.prd.description);
+                  $('#Price').val(data.prd.price);
+                  $('#Ratings').val(data.prd.ratings);
+                  $('#lowPrice').val(data.prd.lowPrice);
+                  $('#highPrice').val(data.prd.highPrice);
+                  $('#ddlCategory').val(data.prd.categoryId);
+                   if(data.prd.productImage){
+                        $('#ProductImage').attr('src',data.prd.productImage);
+                   }
+                  $('#productModal').prop('inert', false).removeAttr('aria-hidden');
+                  $('#productModal').modal('show');
+                  $('#productModalLabel').text('Update Product');
+                  $('#divImage').css('display','block');
+              });
+          }
+
+          function deleteProduct(){
+               $.get("/Admin/Product/GetProduct/"+idCheckBox,function(data){
+                    $('#Id').val(data.prd.id).prop('readonly',true);
+                    $('#Name').val(data.prd.name).prop('readonly',true);
+                    $('#Description').val(data.prd.description).prop('readonly',true);
+                    $('#Price').val(data.prd.price).prop('readonly',true);
+                    $('#Ratings').val(data.prd.ratings).prop('readonly',true);
+                    $('#lowPrice').val(data.prd.lowPrice).prop('readonly',true);
+                    $('#highPrice').val(data.prd.highPrice).prop('readonly',true);
+                    $('#ddlCategory').val(data.prd.categoryId)
+                    $('#ddlCategory').prop('disabled',true);
+                    if(data.prd.productImage){
+                         $('#ProductImage').attr('src',data.prd.productImage);
+                    }
+                     $('#divImage').css('display','none');
+                   $('#productModal').prop('inert', false).removeAttr('aria-hidden');
+                   $('#productModal').modal('show');
+                   $('#productModalLabel').text('Delete Product');
+                   $('#btnSave').text('Delete');
+                   $('#btnSave').addClass('btn-danger').removeClass('btn-success');
+               })
+          }
+
+         function saveProduct()
+         {
+               var btnText=$('#btnSave').text();
+
+               if(btnText=="Save"){
+                      var formData=new FormData();
+                    formData.append('prd.Id',$('#Id').val()==""?$('#EmptyId').val():$('#Id').val());
+                    formData.append('prd.Name',$('#Name').val());
+                    formData.append('prd.Description',$('#Description').val());
+                    formData.append('prd.Price',$('#Price').val());
+                    formData.append('prd.CategoryId',$('#ddlCategory').val());
+                    formData.append('prd.Ratings',$('#Ratings').val());
+                    formData.append('prd.HighPrice',$('#highPrice').val());
+                    formData.append('prd.LowPrice',$('#lowPrice').val());
+                 const fileInput=$('#prdtImage')[0];
+                   var hdnFile=$('#hdnProductImage').val();
+                 if(fileInput.files.length > 0){
+                      formData.append('prd.FormFileImage',fileInput.files[0]);
+                 }
+
+                 else{
+                        formData.append('prd.FormFileImage',hdnFile)
+                 }
+
+                 $.ajax({
+                     type:"POST",
+                     url:"/Admin/Product/Upsert",
+                     data:formData,
+                     contentType: false,
+                     processData: false,
+                     success:function(a)
+                     {
+                        if(a.success){
+                            alert(a.message);
+                            location.reload();
+                        }
+                     },
+                     error:function(){
+                          alert('Error saving product.');
+
+                     }
+
+                 });
+               }
+               else if(btnText=="Delete"){
+                     Swal.fire({
+                      title: "Are you sure?",
+                      text: "You won't be able to revert this!",
+                      icon: "warning",
+                      showCancelButton: true,
+                      confirmButtonColor: "#3085d6",
+                      cancelButtonColor: "#d33",
+                      confirmButtonText: "Yes, delete it!"
+                     })
+                  .then((result) =>
+                  {
+                      if (result.isConfirmed)
+                      {
+                            $.ajax({
+                                type:"POST",
+                                url:"/Admin/Product/Delete/"+idCheckBox,
+                                contentType: 'application/json',
+                                success:function(res)
+                                {
+                                    if(res.success)
+                                    {
+                                        alert(res.message);
+                                        location.reload();
+                                    }
+                                    else
+                                    {
+                                        alert("Error: " + res.message);
+                                    }
+                                }
+                            })
+                      }
+                  });
+               }
+
+         }
+
+         function CheckBox(){
+               var checkBox=$(".IdChkbox:checked");
+              if(checkBox.length==1){
+                   idCheckBox=checkBox.val();
+                   $('#btnEdit').removeClass('disabled');
+                   $('#btnEdit').css('style','cursor:pointer');
+                   $('#btnDelete').removeClass('disabled');
+                   $('#btnCreate').addClass('disabled');
+                   $('#btnDelete').css('style','cursor:pointer');
+              }
+              else{
+                    $('#btnEdit').addClass('disabled');
+                    $('#btnDelete').addClass('disabled');
+                    $('#btnCreate').removeClass('disabled');
+              }
+         }
+
+         function closePopUp(){
+             location.reload();
+         }
+    </script>
+
+}

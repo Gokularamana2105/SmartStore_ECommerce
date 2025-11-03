@@ -1,0 +1,239 @@
+﻿@model HomeDetailsVM
+@{
+    var manageRoles = new[] { Roles.Customer };
+    bool isTrue = manageRoles.Any(role => User.IsInRole(role));
+}
+
+@{
+    decimal discount=0;
+    if(Model.prodt.HighPrice>0){
+        discount = Math.Round(((Model.prodt.HighPrice - Model.prodt.LowPrice) / Model.prodt.HighPrice) * 100);
+    }
+}
+<style>
+    .label {
+        color: #3399FF;
+        background-color: #E6F0FF;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-weight: 500;
+        font-size: 13px;
+    }
+
+    .productLabel {
+        font-weight: bold;
+    }
+
+    label{
+        font-size:12px;
+        color:black !important;
+       
+    }
+
+    .descLabel {
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .divDiscount {
+        color: green !important;
+        background-color: lightgreen;
+        border-radius: 5px;
+        padding: 1px 5px;
+        font-size: 10px;
+        font-weight: bold;
+       margin-top:5px;
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="row d-flex flex-row justify-content-center gap-5">
+        <div class="col-lg-4 col-md-4">
+            <div class="card border-0 shadow bg-gradient p-2">
+                <div class="divImg" style="height:200px; background:#fff;">
+                    <img id="ProductImage" src="@Model.prodt.ProductImage" style="width:100%;max-height:100%;object-fit:fill;" />
+                </div>
+                <div class="divSmallImg rounded" style="height:40px; background:#fff;">
+                    <img src="@Model.prodt.ProductImage" style="max-width:100%;max-height:100%;object-fit:fill;" />
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4">
+            <div class="d-flex flex-column">
+                <div class="divCategory d-flex flex-row gap-3">
+                  
+                        <p class="label mb-0">@Model.prodt.category.Name</p>
+                    <div class="d-flex align-items-center" style="font-size:12px;">
+                        <div>
+                            @for (var i= 1;i <= 5;i++){
+                                if(Model.prodt.Ratings>=i){
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                }
+                                else if(Model.prodt.Ratings>=i-0.5m){
+                                    <i class="bi bi-star-half text-warning"></i>
+                                }
+                                else{
+                                    <i class="bi bi-star text-warning"></i>
+                                }
+                            }
+
+                        </div>
+                        <span class="ms-2 text-muted">(@Model.prodt.Ratings)</span>
+                    </div>
+                </div>
+                <div class="divProduct d-flex flex-column mt-2">
+                    <h3 id="ProductName" class="productLabel">@Model.prodt.Name</h3>
+                    <div  class="productPrice d-flex flex-row gap-2 mb-0 py-0">
+                        <h5 id="PriceText">@Model.prodt.LowPrice.ToString("c2")</h5>
+                        <input type="hidden" id="Price" value="@Model.prodt.LowPrice" />
+                        <div  class="d-flex flex-row gap-2  align-items-center">
+                            <h6  style="font-size:10px;text-decoration:line-through">@Model.prodt.HighPrice.ToString("c2")</h6>
+                            <p class="divDiscount">@discount % off</p>
+                        </div>
+                     
+                    </div>
+                   
+                    <div class="productDel d-flex flex-row gap-2">
+                        <div class="divStock text-success">
+                            <i class="bi bi-check-circle-fill"></i>
+                            <label>In Stock (15 items)</label>
+                        </div>
+
+                        <div class="divShipping text-primary">
+                            <i class="bi bi-truck"></i>
+                            <label>Free Shipping</label>
+                        </div>
+
+                        <div class="divReturns text-info">
+                            <i class="bi bi-arrow-repeat"></i>
+                            <label>30-Day Returns</label>
+                        </div>
+
+                    </div>
+                    <div class="divDes mt-2 d-flex flex-column" >
+                        <h6 class="descLabel mb-0 py-2">Description</h6>
+                        <label id="Description">@Model.prodt.Description</label>
+
+                    </div>
+                    @if(isTrue){
+                        <div class="divCart w-100 d-flex mt-3 ">
+                            <div class="input-group" style="width: 175px;align-self:center">
+                                <button class="btn btn-outline-secondary" type="button" style="height:30px !important;line-height:0px" id="btnMinus">-</button>
+                                <input type="text" id="txtQuantity" class="form-control text-center" style="height:30px !important" value="1" readonly />
+                                <button class="btn btn-outline-secondary" type="button" style="height:30px !important;line-height:0px" id="btnPlus">+</button>
+                            </div>
+                            <button onclick="saveCart()" class="btn btn-dark ms-2 form-control">
+                                <i class="bi bi-cart"></i> Add to Cart
+                            </button>
+                        </div>
+                        <div class="divWishList w-100 mt-3">
+                            <button id="btnWishList" class="btn btn-outline-dark form-control">
+                                <div class="d-flex justify-content-center flex-row gap-2">
+                                    <div>
+                                        <i id="wishlistIcon" class="bi bi-heart"></i>
+                                    </div>
+
+                                    <div>
+                                        Add to Wishlist
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+                    }
+                   
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        document.getElementById("btnPlus").addEventListener("click", function () {
+            let qtyBox = document.getElementById("txtQuantity");
+            let current = parseInt(qtyBox.value);
+            if(current<10){
+                qtyBox.value = current + 1;
+            }
+            
+        });
+
+        document.getElementById("btnMinus").addEventListener("click", function () {
+            let qtyBox = document.getElementById("txtQuantity");
+            let current = parseInt(qtyBox.value);
+            if (current > 1) {  // Prevent going below 1
+                qtyBox.value = current - 1;
+            }
+        });
+
+        let btn = document.getElementById("btnWishList");
+        let icon = document.getElementById("wishlistIcon");
+       
+
+        btn.addEventListener("mouseenter", function () {
+           if (icon.classList.contains("bi-heart")) 
+           {
+                icon.classList.remove("bi-heart");
+                icon.classList.add("bi-heart-fill");
+           }
+        });
+
+       
+        btn.addEventListener("mouseleave", function () {
+            if (icon.classList.contains("bi-heart-fill"))
+           {
+                icon.classList.add("bi-heart");
+                icon.classList.remove("bi-heart-fill");
+           }
+        });
+
+        function saveCart(){
+            var formData=new FormData();
+            formData.append('Name',$('#ProductName').text());
+            formData.append('Price',$('#Price').val());
+            formData.append('Description',$('#Description').text());
+            formData.append('count',$('#txtQuantity').val());
+
+            var imgSrc=$('#ProductImage').attr('src');
+            var fileName=imgSrc.split('\\').pop().split('/').pop();
+            var imgName=fileName.split('_').pop();
+
+            formData.append('FormImage',imgName);
+
+            $.ajax({
+                type:"POST",
+                url:"/Customer/Cart/Insert",
+                data:formData,
+                contentType: false,
+                processData: false,
+                success:function(a){
+                    if(a.success){
+                        var message=a.message;
+                        if(message){
+                            toastr.options = {
+                                closeButton: true,
+                                progressBar: true,
+                                positionClass: "toast-top-right",
+                                timeOut: 3000
+                            };
+                            toastr.success(message);
+                        }
+                        setTimeout(function(){
+                            window.location.href=a.redirectUrl;
+                        },3000);
+                      
+                    }
+                },
+                error:function(a){
+                     toastr.options = {
+                                closeButton: true,
+                                progressBar: true,
+                                positionClass: "toast-top-right",
+                                timeOut: 3000
+                            };
+                    toastr.error(a.message);
+                }
+            })
+        }
+    </script>
+}

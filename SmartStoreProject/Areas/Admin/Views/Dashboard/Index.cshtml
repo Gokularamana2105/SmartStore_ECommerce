@@ -1,0 +1,225 @@
+﻿@model DashboardVM
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Admin Area</h3>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-lg-12">
+            <div class="card border-0 shadow bg-gradient p-4">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h5 class="border-1 border-bottom py-2" style="border-color:darkgray">DashBoard</h5>
+                    </div>
+                </div>
+
+                <div class="row mt-4 mb-3">
+
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <div class="card text-white" style="background-color:#17a2b8; border:none; border-radius:4px;">
+                            <div class="card-body d-flex justify-content-between align-items-center p-3">
+                                <div>
+                                    <h3 class="fw-bold mb-0">@Model.TotalOrders</h3>
+                                    <p class="mb-0">All Orders</p>
+                                </div>
+                                <i class="bi bi-bag-fill" style="font-size:2.5rem; opacity:0.3;"></i>
+                            </div>
+                            <div class="card-footer border-0 bg-transparent text-center">
+                                <a asp-controller="Order" asp-action="Index" class="text-white text-decoration-none">More info <i class="bi bi-arrow-right-circle"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <div class="card text-white" style="background-color:#28a745; border:none; border-radius:4px;">
+                            <div class="card-body d-flex justify-content-between align-items-center p-3">
+                                <div>
+                                    <h3 class="fw-bold mb-0">@Model.ApprovedOrders</h3>
+                                    <p class="mb-0">Approved Orders</p>
+                                </div>
+                                <i class="bi bi-bar-chart-fill" style="font-size:2.5rem; opacity:0.3;"></i>
+                            </div>
+                            <div class="card-footer border-0 bg-transparent text-center">
+                                <a asp-controller="Order" asp-action="Index" class="text-white text-decoration-none">More info <i class="bi bi-arrow-right-circle"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <div class="card text-white" style="background-color:#ffc107; border:none; border-radius:4px;">
+                            <div class="card-body d-flex justify-content-between align-items-center p-3">
+                                <div>
+                                    <h3 class="fw-bold mb-0">@Model.TotalUsers</h3>
+                                    <p class="mb-0">User Registrations</p>
+                                </div>
+                                <i class="bi bi-person-fill" style="font-size:2.5rem; opacity:0.3;"></i>
+                            </div>
+                            <div class="card-footer border-0 bg-transparent text-center">
+                                <a asp-controller="User" asp-action="Index" class="text-white text-decoration-none">More info <i class="bi bi-arrow-right-circle"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <div class="card text-white" style="background-color:#dc3545; border:none; border-radius:4px;">
+                            <div class="card-body d-flex justify-content-between align-items-center p-3">
+                                <div>
+                                    <h3 class="fw-bold mb-0">@Model.TotalProducts</h3>
+                                    <p class="mb-0">Products</p>
+                                </div>
+                                <i class="bi bi-pie-chart-fill" style="font-size:2.5rem; opacity:0.3;"></i>
+                            </div>
+                            <div class="card-footer border-0 bg-transparent text-center">
+                                <a asp-controller="Product" asp-action="Index" class="text-white text-decoration-none">More info <i class="bi bi-arrow-right-circle"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              
+                <div class="row mb-4">
+                    <div class="col-lg-4 d-flex  align-items-center mt-2" style="gap:20px">
+                        <label class="form-label mb-0 me-2 w-50">From Date</label>
+                        <input type="date" id="txtFromDate" class="form-control" />
+                    </div>
+                    <div class="col-lg-4 d-flex  align-items-center mt-2" style="gap:20px">
+                        <label class="form-label mb-0 me-2 w-50">To Date</label>
+                        <input type="date" id="txtToDate" class="form-control" />
+                    </div>
+                    <div class="col-lg-4 col-sm-12 d-flex align-items-center mt-2">
+                        <button type="button" onclick="Search()" class="btn btn-success form-control">Search</button>
+                        <button type="button" onclick="clearFields()" class="btn btn-primary form-control ms-2">Reset</button>
+                    </div>
+                </div>
+                   
+                    
+                
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div id="orderStatusChart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script>
+         
+         var chart;
+         var today = new Date();
+         var year = today.getFullYear();
+         document.addEventListener("DOMContentLoaded",async function () {
+            debugger;
+            $('#txtFromDate').val(`${year}-01-01`);
+            $('#txtToDate').val(`${year}-12-31`);
+            await loadDates();
+          
+        });
+
+       async function loadDates(){
+           const fromDate = document.getElementById('txtFromDate').value || `${year}-01-01`;
+           const toDate = document.getElementById('txtToDate').value || `${year}-12-31`;
+           var url=`@Url.Action("GetOrderChartData", "Dashboard", new { area = "Admin" })?fromDate=${fromDate}&toDate=${toDate}`
+           var response=await fetch(url);
+           var getData=await response.json();
+           loadData(getData);
+        }
+
+       async function Search(){
+              await loadDates();
+       }
+       async function clearFields(){
+            $('#txtFromDate').val(`${year}-01-01`);
+            $('#txtToDate').val(`${year}-12-31`);
+            await loadDates();
+       }
+
+
+        function loadData(getData)
+        {
+            debugger;
+              var options = {
+                chart: {
+                    type: 'line',
+                    height: 380,
+                    background: '#fff',
+                    zoom:{
+                         enabled: true,
+                        type: 'x',
+                        autoScaleYaxis: true
+                    },
+                     toolbar: {
+                        show: true,
+                        tools: {
+                            download: true,
+                            selection: true,
+                            zoom: true,
+                            zoomin: true,
+                            zoomout: true,
+                            pan: true,
+                            reset: true
+                        },
+                        export: {
+                            csv: { filename: 'OrderStatus_Monthly' },
+                            svg: { filename: 'OrderStatus_Monthly' },
+                            png: { filename: 'OrderStatus_Monthly' },
+                            jpg: { filename: 'OrderStatus_Monthly' }
+                        }
+                    }
+                },
+                stroke: {
+                    width: 3,
+                    curve: 'smooth'
+                },
+
+                xaxis: {
+                    categories: getData.month,
+                    title: { text: 'Month' },
+                    labels: { rotate: -45 }
+                },
+                yaxis: {
+                    title: { text: 'Order Count' },
+                    min: 0,
+                    tickAmount: 5
+                },
+                 series: [
+                    { name: 'Approved', data: getData.approved },
+                    { name: 'Processing', data: getData.processing },
+                    { name: 'Pending', data: getData.pending }
+                ],
+                colors: ['#28a745', '#ffc107', '#dc3545'], // green, yellow, red
+                markers: {
+                    size: 4,
+                    hover: { size: 7 }
+                },
+                legend: {
+                    position: 'bottom',
+                    horizontalAlign: 'center',
+                    verticalAlign:'center'
+                },
+                title: {
+                    text: 'Order Status',
+                    align: 'center',
+                    margin: 10,
+                    offsetY: 10,
+                    style: { fontSize: '18px', fontWeight: 'bold' }
+                },
+                grid: {
+                    borderColor: '#e7e7e7',
+                    strokeDashArray: 4
+                }
+            };
+              if(chart)
+              {
+                  chart.destroy();
+              }
+             chart = new ApexCharts(document.querySelector("#orderStatusChart"), options);
+            chart.render();
+        }
+    </script>
+}

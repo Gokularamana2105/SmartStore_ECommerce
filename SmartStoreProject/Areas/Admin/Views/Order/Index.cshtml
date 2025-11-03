@@ -1,0 +1,96 @@
+﻿@model List<Orders>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Orders Management</h3>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-lg-12">
+            <div class="card border-0 shadow bg-gradient p-4">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h5 class="border-1 border-bottom py-2" style="border-color:darkgray">View Orders</h5>
+                    </div>
+                </div>
+               
+                <div class="row">
+                    <div class="col-lg-12">
+                        <table id="tblOrders" class="table table-responsive-md table-striped mb-3">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">
+                                        Name
+                                    </th>
+                                    <th class="text-center">
+                                        City
+                                    </th>
+                                    <th class="text-center">
+                                        Phone Number
+                                    </th>
+                                    <th class="text-center">
+                                       Order Status
+                                    </th>
+                                    <th class="text-center">
+                                        Total
+                                    </th>
+
+                                    <th class="text-center">
+                                        Actions
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var items in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @items.UserName
+                                        </td>
+                                        <td>
+                                            @items.City
+                                        </td>
+                                        <td>
+                                            @items.PhoneNumber
+
+                                        </td>
+                                        <td>
+                                            @items.Status
+
+                                        </td>
+                                        <td>
+                                            @items.Total
+
+                                        </td>
+                                        <td>
+                                            <a id="btnDetails" asp-controller="Order" asp-action="Details" asp-route-id="@items.Id" class="btn btn-warning w-75">Details</a>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts{
+    <script>
+          $(document).ready(function(){
+            $('#tblOrders').DataTable(
+                {
+                   "lengthMenu": [5, 10, 15, 20,50,100],
+
+                }
+            );
+        });
+    </script>
+  
+}

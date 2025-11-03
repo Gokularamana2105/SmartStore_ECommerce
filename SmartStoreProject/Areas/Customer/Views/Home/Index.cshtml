@@ -1,0 +1,176 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model List<Product>
+<style>
+    #bannerCarousel {
+        height: 520px;
+    }
+
+    img 
+    {
+        height: 500px;
+        object-fit: fill;
+        object-position: center;
+    }
+
+    .carousel-indicators
+    {
+        bottom: 75px;
+    }
+
+    .carousel-control-prev 
+    {
+        bottom: 230px;
+    }
+
+    .carousel-control-next 
+    {
+        bottom: 230px;
+    }
+
+    .page-item.active .page-link
+    {
+        background-color:black !important;
+        border-color:black !important;
+        color:white !important;
+    }
+
+    .page-item.disabled .page-link
+    {
+        color:lightgray !important;
+    }
+
+    .page-link{
+        color:black !important;
+    }
+        .banner-img {
+        filter: blur(2px) brightness(0.7); 
+    }
+
+    .carousel-caption {
+        bottom: 20%;
+        left: 10%;
+        right: auto;
+        text-align: left;
+    }
+
+    .carousel-caption h1 {
+        font-size: 3rem;
+    }
+
+    .carousel-caption p {
+        font-size: 1.25rem;
+    }
+    .carousel-indicators [data-bs-target] {
+        width: 30px;
+        height: 3px;
+        background-color: white;
+        border: none;
+    }
+
+    .card {
+        transition: transform 0.4s ease-in-out;
+    }
+
+    .card:hover {
+        transform: scale(1.1); 
+        cursor: pointer;
+    }
+
+</style>
+<div id="bannerCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="100000000">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="0" class="active"></button>
+        <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="1"></button>
+        <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="2"></button>
+    </div>
+
+    <div class="carousel-inner">
+        
+        <div class="carousel-item active position-relative">
+            <img src="~/images/bannerimage/laptopbannerimg.png" class="d-block w-100 banner-img" alt="Banner 1">
+            <div class="carousel-caption text-start">
+                <h1 class="text-white fw-bold">Welcome to <span class="text-primary">Smart Store</span></h1>
+                <p class="text-light">Discover top-quality products tailored for you.</p>
+                <a href="#" class="btn btn-primary mt-3">Start Shopping</a>
+            </div>
+        </div>
+        <div class="carousel-item position-relative">
+            <img src="~/images/bannerimage/cameraImg.png" class="d-block w-100 banner-img" alt="Banner 2">
+            <div class="carousel-caption text-start">
+                <h1 class="text-white fw-bold">New Arrivals</h1>
+                <p class="text-light">Check out the latest trends in smart devices.</p>
+                <a href="#" class="btn btn-primary mt-3">Shop Now</a>
+            </div>
+        </div>
+        <div class="carousel-item position-relative">
+            <img src="~/images/bannerimage/phoneImg.png" class="d-block w-100 banner-img" alt="Banner 3">
+            <div class="carousel-caption text-start">
+                <h1 class="text-white fw-bold">Exclusive Deals</h1>
+                <p class="text-light">Grab the best offers before they’re gone.</p>
+                <a href="#" class="btn btn-primary mt-3">Explore Deals</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Controls -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </button>
+</div>
+
+
+
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-lg-12 d-flex flex-wrap justify-content-center gap-4">
+            @foreach (var item in Model)
+            {
+                <div class="card shadow border-0" style="width: 18rem;">
+                    <div style="height:150px; background:#fff; display:flex; align-items:center; justify-content:center;">
+                        <img src="@item.ProductImage"
+                             class="img-fluid"
+                             style="max-height:100%; max-width:100%; object-fit:contain;"
+                             alt="@item.Name">
+                    </div>
+                    <div class="card-body text-center">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-text fw-bold text-primary">
+                            @item.LowPrice.ToString("C2")
+                        </p>
+                        <a href="@Url.Action("Details","Home",new{id=item.Id,page=ViewBag.CurrentPage})" class="btn btn-dark">View Details</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<nav class="mt-5" aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        
+        <li class="page-item @(ViewBag.CurrentPages==1?"disabled":"")">
+                <a class="page-link" href="@Url.Action("Index",new{page=ViewBag.CurrentPages-1})" tabindex="-1">Previous</a>
+        </li>
+        @for (int i = 1; i <= ViewBag.TotalPages;i++){
+            if(i==ViewBag.CurrentPages){
+                <li class="page-item active"><span class="page-link">@i</span></li>
+            }
+            else{
+                <li class="page-item"><a class="page-link" href="@Url.Action("Index",new{page=i})" >@i</a></li>
+            }
+        }
+        
+        <li class="page-item @(ViewBag.CurrentPages>=ViewBag.TotalPages?"disabled":"")">
+                <a class="page-link" href="@Url.Action("Index",new{page=ViewBag.CurrentPages+1})">Next</a>
+        </li>
+    </ul>
+</nav>
+
+
+
+

@@ -1,0 +1,128 @@
+﻿@page
+@model RegisterModel
+@{
+    var roles = new[] { Roles.Admin, Roles.Editor };
+    bool isTrue = roles.Any(r => User.IsInRole(r));
+}
+@{
+    ViewData["Title"] = "Register";
+}
+<style>
+    input{
+        height: 45px !important;
+    }
+    label{
+        padding:10px 10px !important;
+    }
+</style>
+
+
+<div class="container d-flex justify-content-center align-items-center mt-5">
+    <div class="card border-0 shadow rounded w-75">
+        <div class="row g-0">
+            <div class="col-lg-7 p-4">
+                <div class="divHead mb-3">
+                    <h2>
+                        <span class="border-bottom border-primary border-4">Crea</span>te Your Account
+                    </h2>
+                    <p>Join us today and start your shopping journey</p>
+                </div>
+
+                <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" autocomplete="off" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.Email" class="form-control border-0 shadow-sm" placeholder="Email" />
+                                <label class="text-muted" asp-for="Input.Email">Email</label>
+                                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.Name"  class="form-control border-0 shadow-sm" placeholder="Name" />
+                                <label class="text-muted" asp-for="Input.Name">Full Name</label>
+                                <span asp-validation-for="Input.Name" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.PhoneNumber" class="form-control border-0 shadow-sm" placeholder="Phone" />
+                                <label class="text-muted" asp-for="Input.PhoneNumber">Phone Number</label>
+                                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <!-- Street -->
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.street" class="form-control border-0 shadow-sm" placeholder="Street" />
+                                <label class="text-muted" asp-for="Input.street">Street Address</label>
+                                <span asp-validation-for="Input.street" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <!-- City -->
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.city" class="form-control border-0 shadow-sm" placeholder="City" />
+                                <label class="text-muted" asp-for="Input.city">City</label>
+                                <span asp-validation-for="Input.city" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <!-- Password -->
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.Password" type="password" class="form-control border-0 shadow-sm" placeholder="Password" />
+                                <label class="text-muted" asp-for="Input.Password">Password</label>
+                                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.ConfirmPassword" type="password" class="form-control border-0 shadow-sm" placeholder="Confirm Password" />
+                                <label class="text-muted" asp-for="Input.ConfirmPassword">Confirm Password</label>
+                                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                            </div>
+                        </div>
+                        @if(isTrue){
+                            <div class="col-md-6">
+                                <div class="d-flex">
+                                    @foreach (var role in Model.Input.Roles)
+                                    {
+                                        <label style="display: flex;justify-content: center;align-items: center;gap: 10px;cursor:pointer">
+                                            <input type="radio" name="Input.Role" value="@role.Value"
+                                            @(Model.Input.Role == role.Value ? "checked" : "") />
+                                            @role.Text
+                                        </label>
+                                    }
+                                </div>
+                            </div>
+                        }
+                       
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-lg-12">
+                            <button id="registerSubmit" type="submit" class="btn btn-primary form-control">
+                                <i class="bi bi-person-plus-fill"></i> Register Now
+                            </button>
+                        </div>
+                    </div>
+                    
+                </form>
+                <div class="text-center mt-3">
+                    <p>Already have an account? <a asp-page="./Login">Sign in here</a></p>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <img src="~/images/register.png" alt="Register" class="img-fluid" style="height:100% !important" />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
