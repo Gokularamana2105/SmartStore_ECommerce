@@ -1,3 +1,349 @@
+﻿<style>
+    body {
+        background-color: #f8f9fa;
+        font-family: "Segoe UI", sans-serif;
+    }
+
+    .who-we-are {
+        padding: 60px 0;
+    }
+
+        .who-we-are h2 {
+            font-weight: 700;
+            color: #0d1b2a;
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+            .who-we-are h2::after {
+                content: "";
+                position: absolute;
+                width: 60px;
+                height: 3px;
+                background-color: #007bff;
+                left: 0;
+                bottom: -8px;
+                border-radius: 2px;
+            }
+
+        .who-we-are ul {
+            list-style: none;
+            padding: 0;
+        }
+
+            .who-we-are ul li {
+                margin-bottom: 10px;
+                font-weight: 500;
+            }
+
+                .who-we-are ul li i {
+                    color: #28a745;
+                    margin-right: 8px;
+                }
+
+        .who-we-are img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+    .why-choose {
+        text-align: center;
+        padding: 80px 0;
+    }
+
+        .why-choose h2 {
+            font-weight: 700;
+            color: #0d1b2a;
+            position: relative;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+            .why-choose h2::after {
+                content: "";
+                position: absolute;
+                width: 70px;
+                height: 3px;
+                background-color: #007bff;
+                left: 50%;
+                bottom: -8px;
+                transform: translateX(-50%);
+                border-radius: 2px;
+            }
+
+        .why-choose p.subtitle {
+            color: #6c757d;
+            margin-bottom: 50px;
+        }
+
+    .why-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 30px 25px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+
+        .why-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .why-card i {
+            font-size: 32px;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        .why-card h5 {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #0d1b2a;
+        }
+
+        .why-card p {
+            color: #6c757d;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+    .product-categories {
+        padding: 80px 0;
+        text-align: center;
+    }
+
+        .product-categories h2 {
+            font-weight: 700;
+            color: #0d1b2a;
+            position: relative;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+            .product-categories h2::after {
+                content: "";
+                position: absolute;
+                width: 70px;
+                height: 3px;
+                background-color: #007bff;
+                left: 50%;
+                bottom: -8px;
+                transform: translateX(-50%);
+                border-radius: 2px;
+            }
+
+        .product-categories p.subtitle {
+            color: #6c757d;
+            margin-bottom: 50px;
+        }
+
+    .category-card {
+        position: relative;
+        overflow: hidden;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .category-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            filter: brightness(0.8);
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover img {
+            filter: brightness(1);
+            transform: scale(1.05);
+        }
+
+    .category-content {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        color: white;
+        text-align: left;
+    }
+
+        .category-content h5 {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .category-content p {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .category-content .btn {
+            background-color: #007bff;
+            border: none;
+            font-size: 14px;
+            padding: 6px 14px;
+        }
+
+            .category-content .btn:hover {
+                background-color: #0056b3;
+            }
+</style>
+
+<div class="bannersection" style="height:50vh;background-color:#000080">
+    <div class="bannerbody text-center text-light pt-5 pb-5" >
+        <h2 class="text-light fw-bold" style="font-size:22px">About Smart Store </h2>
+        <p>
+            Smart Store is a cutting-edge e-commerce platform dedicated to providing customers with a seamless and enjoyable shopping experience.<br />
+            Founded in 2024, our mission is to offer a wide range of high-quality products at competitive prices,<br /> all while prioritizing customer satisfaction and convenience.
+        </p>
+        <div class="bannerButtons d-flex justify-content-center gap-4 mt-5">
+            <a class="btn btn-outline-light" asp-controller="Home" asp-action="Index">Our Products</a>
+            <a class="btn btn-outline-light">Contact Us</a>
+        </div>
+    </div>
+  
+</div>
+
+<section class="who-we-are">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h2>Who We Are</h2>
+                <p>
+                    At <strong>Smart Store</strong>, we are your trusted destination for the latest and greatest in technology.
+                    Whether you're looking for high-performance laptops, sleek smartphones, premium headphones, or cutting-edge
+                    electronics, we bring innovation and affordability together to enhance your tech lifestyle.
+                </p>
+                <p>
+                    We are a team of tech enthusiasts dedicated to providing top-quality products at competitive prices. Our mission
+                    is to make the latest technology accessible to everyone, ensuring a seamless and enjoyable shopping experience.
+                </p>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <ul>
+                            <li><i class="bi bi-check-circle-fill"></i>100% Authentic Products</li>
+                            <li><i class="bi bi-check-circle-fill"></i>Free Shipping Over $100</li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-6">
+                        <ul>
+                            <li><i class="bi bi-check-circle-fill"></i>2-Year Warranty</li>
+                            <li><i class="bi bi-check-circle-fill"></i>24/7 Customer Support</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mt-4 mt-md-0">
+                <img src="~/images/download (1).jpg" alt="Smart Store">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="why-choose">
+    <div class="container">
+        <h2>Why Choose Smart Store</h2>
+        <p class="subtitle">We go the extra mile to ensure your complete satisfaction</p>
+
+        <div class="row g-4">
+            <!-- Quality Assurance -->
+            <div class="col-md-6 col-lg-3">
+                <div class="why-card h-100">
+                    <i class="bi bi-shield-check"></i>
+                    <h5>Quality Assurance</h5>
+                    <p>Every product undergoes rigorous testing to ensure it meets our high quality standards before reaching you.</p>
+                </div>
+            </div>
+
+            <!-- Best Prices -->
+            <div class="col-md-6 col-lg-3">
+                <div class="why-card h-100">
+                    <i class="bi bi-currency-dollar"></i>
+                    <h5>Best Prices</h5>
+                    <p>We offer competitive pricing and regular discounts to make premium technology affordable for everyone.</p>
+                </div>
+            </div>
+
+            <!-- Expert Support -->
+            <div class="col-md-6 col-lg-3">
+                <div class="why-card h-100">
+                    <i class="bi bi-headset"></i>
+                    <h5>Expert Support</h5>
+                    <p>Our tech specialists are available 24/7 to help you with any questions or issues you may have.</p>
+                </div>
+            </div>
+
+            <!-- Fast Delivery -->
+            <div class="col-md-6 col-lg-3">
+                <div class="why-card h-100">
+                    <i class="bi bi-lightning-charge"></i>
+                    <h5>Fast Delivery</h5>
+                    <p>We process and ship orders within 24 hours, with multiple delivery options to suit your needs.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="product-categories">
+    <div class="container">
+        <h2>Our Product Categories</h2>
+        <p class="subtitle">Explore our wide range of premium electronics</p>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="category-card">
+                    <img src="~/images/bannerImage/lapTopBannerImg.png" alt="Laptops">
+                    <div class="category-content">
+                        <h5>Laptops</h5>
+                        <p>From ultrabooks to gaming powerhouses</p>
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="category-card">
+                    <img src="~/images/bannerImage/phoneImg.png" alt="Smartphones">
+                    <div class="category-content">
+                        <h5>Smartphones</h5>
+                        <p>Flagship devices at competitive prices</p>
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="category-card">
+                    <img src="~/images/bannerImage/358c1d3a-de77-4ffe-bd1f-7c044ff20c5c_boatimg.jpeg" alt="Headphones">
+                    <div class="category-content">
+                        <h5>Headphones</h5>
+                        <p>Premium audio for music lovers</p>
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="category-card">
+                    <img src="~/images/bannerImage/cameraImg.png" alt="Cameras">
+                    <div class="category-content">
+                        <h5>Cameras</h5>
+                        <p>Capture your moments in high resolution</p>
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+
+          
+        </div>
+    </div>
+</section>
 ﻿
-<h6>This is About Page</h6>
 
