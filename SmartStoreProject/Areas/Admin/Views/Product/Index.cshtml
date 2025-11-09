@@ -103,7 +103,7 @@
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label for="Name" class="form-label">Name</label>
-                                    <input id="Name" class="form-control" required />
+                                    <input id="Name" class="form-control" oninput="allowOnlyCharsAndSpace(this)" required />
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -120,7 +120,7 @@
                             <div class="col-md-12">
                                 <div class="mb-3">
                                     <label for="Description" class="form-label">Description</label>
-                                    <textarea class="form-control" id="Description"></textarea>
+                                    <textarea class="form-control" oninput="allowOnlyCharsAndSpace(this)" id="Description"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -135,7 +135,7 @@
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label for="Ratings" class="form-label">Ratings</label>
-                                    <input id="Ratings" class="form-control" required />
+                                    <input id="Ratings" class="form-control" onkeydown="return allowRatingFormat(event, this)" required />
                                 </div>
                             </div>
 
@@ -143,14 +143,14 @@
                         <div class="row">
                             <div class="col-lg-6">
                                     <div class="mb-3">
-                                        <label for="highPrice" class="form-label">Top Price</label>
-                                        <input id="highPrice" class="form-control" required />
+                                    <label for="highPrice"  class="form-label">Top Price</label>
+                                    <input id="highPrice" onkeydown="return allowPriceFormat(event, this)" class="form-control" required />
                                     </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label for="lowPrice" class="form-label">Low Price</label>
-                                    <input id="lowPrice" type="text" class="form-control" />
+                                    <input id="lowPrice" onkeydown="return allowPriceFormat(event, this)" type="text" class="form-control" />
                                 </div>
                             </div>
                         </div>
@@ -238,9 +238,134 @@
                })
           }
 
+        function allowOnlyCharsAndSpace(input) {
+            input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
+        }
+
+        function allowNumbersAndOneDot(e, input) {
+            const key = e.key;
+           
+            if (['Backspace','Delete','ArrowLeft','ArrowRight','Tab'].includes(key)) return true;
+
+            if (/^[0-9]$/.test(key)) return true;
+            if (key === '.' && !input.value.includes('.')) return true;
+
+            return false; 
+        }
+        function allowRatingFormat(e, input) {
+            const key = e.key;
+
+            if (['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(key)) return true;
+
+            if (/^[0-9]$/.test(key)) {
+                const value = input.value;
+
+             
+                if (!value.includes('.')) {
+                    return value.length < 1;
+                }
+                const parts = value.split('.');
+                return parts[1].length < 1;
+            }
+            if (key === '.' && !input.value.includes('.') && input.value.length === 1) {
+                return true;
+            }
+
+            return false;
+        }
+
+        function allowPriceFormat(e, input) {
+            const key = e.key;
+
+            if (['Backspace','Delete','ArrowLeft','ArrowRight','Tab'].includes(key)) return true;
+
+            if (/^[0-9]$/.test(key)) {
+                const value = input.value;
+                const parts = value.split('.');
+                if (!value.includes('.')) {
+                    return parts[0].length < 7; 
+                }
+                return parts[1].length < 2;
+            }
+            if (key === '.' && !input.value.includes('.') && input.value.length > 0) {
+                return true;
+            }
+
+            return false; 
+        }
+
          function saveProduct()
          {
-               var btnText=$('#btnSave').text();
+            var name=$('#Name').val();
+            var description=$('#Description').val();
+            var price=$('#Price').val();
+            var categoryId=$('#ddlCategory').val();
+            var ratings=$('#Ratings').val();
+            var highPrice=$('#highPrice').val();
+            var lowPrice=$('#lowPrice').val();
+            var errmsg='';
+            var errcount=0;
+            var firstObj=null;
+            if(name==""){
+                 errmsg+= ++errcount +"Name is required.\n";
+                 
+                 if(firstObj==null){
+                      firstObj=$('#Name');
+                 }
+            }
+            if(description==""){
+                 errmsg+= ++errcount +"Description is required.\n";
+                 
+                 if(firstObj==null){
+                      firstObj=$('#Description');
+                 }
+            }
+            if(price==""){
+                 errmsg+= ++errcount +"Price is required.\n";
+                 
+                 if(firstObj==null){
+                      firstObj=$('#Price');
+                 }
+            }
+            if(categoryId=="" || categoryId=="00000000-0000-0000-0000-000000000000"){
+                 errmsg+= ++errcount +"Category is required.\n";
+                 
+                 if(firstObj==null){
+                      firstObj=$('#ddlCategory');
+                 }
+            }
+            if(ratings==""){
+                 errmsg+= ++errcount +"Ratings is required.\n";
+                 
+                 if(firstObj==null){
+                      firstObj=$('#Ratings');
+                 }
+            }
+            if(highPrice==""){
+                 errmsg+= ++errcount +"Top Price is required.\n";
+                 
+                 if(firstObj==null){
+                      firstObj=$('#highPrice');
+                 }
+            }
+            if(lowPrice==""){
+                 errmsg+= ++errcount +"Low Price is required.\n";
+                 
+                 if(firstObj==null){
+                      firstObj=$('#lowPrice');
+                 }
+            }
+            if(errcount>0){
+               alert(errmsg);
+                if(firstObj!=null){
+                    firstObj.focus();
+                }
+                return false;
+
+            }
+            return true;
+
+            var btnText=$('#btnSave').text();
 
                if(btnText=="Save"){
                       var formData=new FormData();
@@ -275,10 +400,10 @@
                             location.reload();
                         }
                      },
-                     error:function(){
-                          alert('Error saving product.');
-
-                     }
+                     error: function (xhr) {
+                        console.log(xhr);
+                        alert("Server Error: " + xhr.responseText);
+                    }
 
                  });
                }

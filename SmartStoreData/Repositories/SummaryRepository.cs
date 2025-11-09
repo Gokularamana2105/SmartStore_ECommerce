@@ -33,9 +33,11 @@ namespace SmartStoreData.Repositories
 
         public async Task<List<Summary>> GetSummaryById(string id)
         {
-          
-            var query = await _db.summary.Include(x=>x.cart).Where(x => x.CreatedBy == id && x.cart.isValid==true && x.isActive==true).GroupBy(x => new { x.ProductName, x.Price })
-                .Select(g => g.OrderByDescending(x => x.CreatedOn).FirstOrDefault()).ToListAsync();
+
+            //var query = await _db.summary.Include(x=>x.cart).Where(x => x.CreatedBy == id && x.cart.isValid==true && x.isActive==true).GroupBy(x => new { x.ProductName, x.Price })
+            //    .Select(g => g.OrderByDescending(x => x.CreatedOn).FirstOrDefault()).ToListAsync();
+
+            var query = await _db.summary.Include(x => x.cart).Where(x => x.CreatedBy == id && x.cart.isValid == true && x.isActive == true).OrderByDescending(x=>x.CreatedOn).ToListAsync();
             return query;
         }
 

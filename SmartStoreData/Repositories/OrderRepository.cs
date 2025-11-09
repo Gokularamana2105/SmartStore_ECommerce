@@ -64,6 +64,7 @@ namespace SmartStoreData.Repositories
             if(await _db.orders.FindAsync(orderId) is { } query)
             {
                query.isValid= query.isActive = false;
+
             }
         }
 
