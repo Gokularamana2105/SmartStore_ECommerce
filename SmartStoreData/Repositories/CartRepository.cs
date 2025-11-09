@@ -31,7 +31,9 @@ namespace SmartStoreData.Repositories
 
         public async Task<List<Cart>> GetAllCart()
         {
-          return  await _db.carts.Where(x=>x.isValid==true && x.isApproved==false).ToListAsync();
+         
+           
+            return  await _db.carts.Where(x=>x.isValid==true && x.isApproved==false).ToListAsync();
         }
 
         public async Task<List<Cart>> GetCartById(string id)

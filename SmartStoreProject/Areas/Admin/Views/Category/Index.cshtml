@@ -97,11 +97,11 @@
 
                 <div class="mb-3">
                     <label class="form-label">Name</label>
-                    <input id="Name" class="form-control" required />
+                    <input id="Name" class="form-control" oninput="allowOnlyCharsAndSpace(this)" required />
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Description</label>
-                    <textarea class="form-control" id="Description"></textarea>
+                    <textarea class="form-control" oninput="allowOnlyCharsAndSpace(this)" id="Description"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -123,6 +123,10 @@
             );
         });
 
+        function allowOnlyCharsAndSpace(input) {
+            input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
+        }
+
         function createCategory(){
             $('#Id').val('');
             $('#Name').val('');
@@ -134,7 +138,6 @@
         }
 
         function editCategory(id){
-            debugger;
             $.get("/Admin/Category/GetCategory/"+id,function(data) {
 
                   $('#Id').val(data.id);
@@ -146,7 +149,6 @@
         }
 
          function deleteCategory(id){
-            debugger;
             $.get("/Admin/Category/GetCategory/"+id,function(data) {
 
                   $('#Id').val(data.id);
@@ -159,8 +161,35 @@
             });
         }
 
-        function saveCategory(){
-            debugger;
+        function saveCategory()
+        {
+            var name=$('#Name').val();
+            var description=$('#Description').val();
+            var errmsg='';
+            var errcount=0;
+            var firstObj=null;
+            if(name==''){
+                errmsg +=++errcount +". Name is required.\n";
+                if(firstObj==null){
+                    firstObj=$('#Name');
+                }
+            }
+             if(description==''){
+                errmsg +=++errcount +". Description is required.\n";
+                if(firstObj==null){
+                    firstObj=$('#Description');
+                }
+            }
+
+            if(errcount>0){
+               alert(errmsg);
+                if(firstObj!=null){
+                    firstObj.focus();
+                }
+                return false;
+
+            }
+            
             var btnValue= $('#btnSave').text();
             var idVal=$('#Id').val();
             var emptyId=$('#EmptyId').val();

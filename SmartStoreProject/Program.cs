@@ -10,6 +10,7 @@ using SmartStoreModels.Models.BaseModels;
 using Stripe;
 
 
+
 namespace SmartStoreProject
 {
     public class Program
@@ -62,16 +63,21 @@ namespace SmartStoreProject
                 }
             }
             #endregion
+
+            builder.WebHost.CaptureStartupErrors(true);
+            builder.WebHost.UseSetting("detailedErrors", "true");
             var app = builder.Build();
-             Update(app);
+
+            app.UseDeveloperExceptionPage();
+            Update(app);
 
             // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
-            {
+            //if (!app.Environment.IsDevelopment())
+            //{
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
-            }
+            //}
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

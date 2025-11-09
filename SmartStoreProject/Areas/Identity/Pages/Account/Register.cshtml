@@ -40,14 +40,14 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating mb-3">
-                                <input asp-for="Input.Name"  class="form-control border-0 shadow-sm" placeholder="Name" />
+                                <input asp-for="Input.Name" oninput="allowOnlyCharsAndSpace(this)" class="form-control border-0 shadow-sm" placeholder="Name" />
                                 <label class="text-muted" asp-for="Input.Name">Full Name</label>
                                 <span asp-validation-for="Input.Name" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating mb-3">
-                                <input asp-for="Input.PhoneNumber" class="form-control border-0 shadow-sm" placeholder="Phone" />
+                                <input asp-for="Input.PhoneNumber" maxlength="10" onkeydown="return allowOnlyNumbers(event)" class="form-control border-0 shadow-sm" placeholder="Phone" />
                                 <label class="text-muted" asp-for="Input.PhoneNumber">Phone Number</label>
                                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
                             </div>
@@ -55,7 +55,7 @@
                         <!-- Street -->
                         <div class="col-md-6">
                             <div class="form-floating mb-3">
-                                <input asp-for="Input.street" class="form-control border-0 shadow-sm" placeholder="Street" />
+                                <input asp-for="Input.street" oninput="allowOnlyCharsAndSpace(this)" class="form-control border-0 shadow-sm" placeholder="Street" />
                                 <label class="text-muted" asp-for="Input.street">Street Address</label>
                                 <span asp-validation-for="Input.street" class="text-danger"></span>
                             </div>
@@ -63,7 +63,7 @@
                         <!-- City -->
                         <div class="col-md-6">
                             <div class="form-floating mb-3">
-                                <input asp-for="Input.city" class="form-control border-0 shadow-sm" placeholder="City" />
+                                <input asp-for="Input.city" oninput="allowOnlyCharsAndSpace(this)" class="form-control border-0 shadow-sm" placeholder="City" />
                                 <label class="text-muted" asp-for="Input.city">City</label>
                                 <span asp-validation-for="Input.city" class="text-danger"></span>
                             </div>
@@ -125,4 +125,20 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        function allowOnlyCharsAndSpace(input) {
+            input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
+        }
+
+        function allowOnlyNumbers(e) {
+            const key = e.key;
+            if (['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(key)) return true;
+
+            if (/^[0-9]$/.test(key)) return true;
+
+            return false; 
+        }
+    </script>
+   
 }

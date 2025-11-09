@@ -22,7 +22,7 @@ namespace SmartStoreProject.Areas.Admin.Controllers
         public IActionResult Index()
         {
 
-            var totalOrder = _uk.order.Count(x => (x.isValid == true && x.isActive == true) || (x.Status == "Approved" || x.Status == "Processing"));
+            var totalOrder = _uk.order.Count(x => (x.isValid == true && x.isActive == true) || (x.Status == "Approved"));
             var approvedOrder = _uk.order.Count(x => x.Status == "Approved");
             var users = _uk.user.Count(x=>x.isActive&& x.isValid);
             var products=_uk.prodt.Count(x=>x.isValid==true);

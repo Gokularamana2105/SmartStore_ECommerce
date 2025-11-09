@@ -68,53 +68,66 @@ namespace SmartStoreProject.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Upsert(ProductVM prodt)
         {
-            if(ModelState.IsValid)
+            try
             {
-                string rootpath=_web.WebRootPath;
-
-                if (prodt.prd.FormFileImage != null)
+                if (ModelState.IsValid)
                 {
-                    string fileExtension = Guid.NewGuid().ToString() + "_" + prodt.prd.FormFileImage.FileName;
-                    string folderPath = Path.Combine(rootpath, @"images\Product");
-                    string filePath=Path.Combine(folderPath, fileExtension);
-                    if (prodt.prd.ProductImage!= null)
+                    string rootpath = _web.WebRootPath;
+                    prodt.prd.isValid = true;
+
+                    if (prodt.prd.FormFileImage != null)
                     {
-                        var oldImage=Path.Combine(rootpath,prodt.prd.ProductImage.Trim('\\'));
-                        if (System.IO.File.Exists(oldImage))
+                        string fileExtension = Guid.NewGuid().ToString() + "_" + prodt.prd.FormFileImage.FileName;
+                        string folderPath = Path.Combine(rootpath, @"images\Product");
+                        string filePath = Path.Combine(folderPath, fileExtension);
+                        if (prodt.prd.ProductImage != null)
                         {
-                            System.IO.File.Delete(oldImage);
-                        }
-                       
-                    }
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await prodt.prd.FormFileImage.CopyToAsync(fileStream);
-                    }
+                            var oldImage = Path.Combine(rootpath, prodt.prd.ProductImage.Trim('\\'));
+                            if (System.IO.File.Exists(oldImage))
+                            {
+                                System.IO.File.Delete(oldImage);
+                            }
 
-                    prodt.prd.ProductImage = @"\images\Product\" + fileExtension;
-                }
-                else
-                {
-                    var existingProdt = await _uk.prodt.FindById(prodt.prd.Id);
-                    if (existingProdt != null)
-                    {
-                        prodt.prd.ProductImage= existingProdt.ProductImage;
+                        }
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await prodt.prd.FormFileImage.CopyToAsync(fileStream);
+                        }
+
+                        prodt.prd.ProductImage = @"\images\Product\" + fileExtension;
                     }
+                    else
+                    {
+                        var existingProdt = await _uk.prodt.FindById(prodt.prd.Id);
+                        if (existingProdt != null)
+                        {
+                            prodt.prd.ProductImage = existingProdt.ProductImage;
+                        }
+                    }
+                    bool isNew = false;
+                    if (prodt.prd.Id == Guid.Empty)
+                    {
+                        isNew = true;
+                        await _uk.prodt.Add(prodt.prd);
+                    }
+                    else
+                    {
+                        await _uk.prodt.Update(prodt.prd);
+                    }
+                    await _uk.Save();
+                    return Json(new { success = true, message = isNew == true ? Messages.ProductMethod("Create") : Messages.ProductMethod("Update") });
                 }
-                bool isNew = false;
-                if(prodt.prd.Id==Guid.Empty)
-                {
-                    isNew=true;
-                    await _uk.prodt.Add(prodt.prd);
-                }
-                else
-                {
-                    await _uk.prodt.Update(prodt.prd);
-                }
-                await _uk.Save();
-                return Json(new { success = true, message = isNew==true?Messages.ProductMethod("Create"):Messages.ProductMethod("Update") });
+                return Json(new { success = false, message = "Error on data" });
             }
-            return Json(new {success=false,message="Error on data"});
+            catch (Exception ex)
+            {
+                
+
+               
+                return StatusCode(500,ex.ToString());
+
+            }
+          
         }
 
         public async Task<IActionResult> Delete(Guid id)

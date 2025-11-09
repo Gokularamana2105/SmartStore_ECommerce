@@ -20,7 +20,7 @@ namespace SmartStoreProject.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var orders=await _uk.order.QueryAsync(x=>(x.isValid==true && x.isActive==true) || (x.Status=="Approved" || x.Status== "Processing"));
+            var orders=await _uk.order.QueryAsync(x=>(x.isValid==true && x.isActive==true) || (x.Status=="Approved"));
             return View(orders);
         }
         [HttpGet]
