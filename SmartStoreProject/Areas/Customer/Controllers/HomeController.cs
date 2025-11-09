@@ -58,6 +58,7 @@ namespace SmartStoreProject.Areas.Customer.Controllers
         [Authorize(Roles = Roles.Customer + "," + Roles.Admin + "," + Roles.Editor)]
         public async Task<IActionResult> Details(Guid id)
         {
+
             Product product=await _uk.prodt.FindById(id);
             var prodt = new List<Product>();
             if (product != null)
