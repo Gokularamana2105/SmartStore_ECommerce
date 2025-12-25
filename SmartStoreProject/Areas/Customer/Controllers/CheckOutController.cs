@@ -25,7 +25,7 @@ namespace SmartStoreProject.Areas.Customer.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCheckOutSession([FromBody] CheckoutRequest responses)
         {
-            var domain = "https://localhost:44300";
+            var domain = "https://smartstoreapp.runasp.net"; /*https://localhost:44300*/
 
             string userId = responses.UserId;
             HttpContext.Session.SetString("UserId", responses.UserId);

@@ -296,76 +296,7 @@
 
          function saveProduct()
          {
-            var name=$('#Name').val();
-            var description=$('#Description').val();
-            var price=$('#Price').val();
-            var categoryId=$('#ddlCategory').val();
-            var ratings=$('#Ratings').val();
-            var highPrice=$('#highPrice').val();
-            var lowPrice=$('#lowPrice').val();
-            var errmsg='';
-            var errcount=0;
-            var firstObj=null;
-            if(name==""){
-                 errmsg+= ++errcount +"Name is required.\n";
-                 
-                 if(firstObj==null){
-                      firstObj=$('#Name');
-                 }
-            }
-            if(description==""){
-                 errmsg+= ++errcount +"Description is required.\n";
-                 
-                 if(firstObj==null){
-                      firstObj=$('#Description');
-                 }
-            }
-            if(price==""){
-                 errmsg+= ++errcount +"Price is required.\n";
-                 
-                 if(firstObj==null){
-                      firstObj=$('#Price');
-                 }
-            }
-            if(categoryId=="" || categoryId=="00000000-0000-0000-0000-000000000000"){
-                 errmsg+= ++errcount +"Category is required.\n";
-                 
-                 if(firstObj==null){
-                      firstObj=$('#ddlCategory');
-                 }
-            }
-            if(ratings==""){
-                 errmsg+= ++errcount +"Ratings is required.\n";
-                 
-                 if(firstObj==null){
-                      firstObj=$('#Ratings');
-                 }
-            }
-            if(highPrice==""){
-                 errmsg+= ++errcount +"Top Price is required.\n";
-                 
-                 if(firstObj==null){
-                      firstObj=$('#highPrice');
-                 }
-            }
-            if(lowPrice==""){
-                 errmsg+= ++errcount +"Low Price is required.\n";
-                 
-                 if(firstObj==null){
-                      firstObj=$('#lowPrice');
-                 }
-            }
-            if(errcount>0){
-               alert(errmsg);
-                if(firstObj!=null){
-                    firstObj.focus();
-                }
-                return false;
-
-            }
-            return true;
-
-            var btnText=$('#btnSave').text();
+               var btnText=$('#btnSave').text();
 
                if(btnText=="Save"){
                       var formData=new FormData();
